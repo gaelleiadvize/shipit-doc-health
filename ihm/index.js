@@ -124,7 +124,7 @@ $(document).ready(function () {
 
       console.log(messageFormated); // Le 26/05/2011
 
-      sendVisitorMessage(message, messageFormated);
+      sendVisitorMessage(message, message);
       $("#chat-input input").val("");
     }
   });
