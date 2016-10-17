@@ -125,4 +125,5 @@ body {
     background-color: white;
     border: 1px solid #EFEFEF;
     color: #0099FF;
+    box-shadow: 0 0 2px 2px #0088FF;
 }
