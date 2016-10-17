@@ -67,17 +67,19 @@ var appendMessage = function (from, message, quickReplies) {
   updateScroll();
 };
 
-var sendVisitorMessage = (message, messageFormated) => {
+var sendVisitorMessage = (messageDisplay, message) => {
   const data = {
-    messageFormated,
+    message,
     sessionId
   };
-  appendMessage('visitor', message);
+  appendMessage('visitor', messageDisplay);
+
+  console.log(data);
   socketManager.sendMessage(data);
 };
 
 var sendQuickReply = (reply) => {
-  sendVisitorMessage(reply);
+  sendVisitorMessage(reply, reply);
   $('.quickReply').remove();
 };
 
@@ -124,7 +126,7 @@ $(document).ready(function () {
 
       console.log(messageFormated); // Le 26/05/2011
 
-      sendVisitorMessage(message, message);
+      sendVisitorMessage(message, messageFormated);
       $("#chat-input input").val("");
     }
   });
