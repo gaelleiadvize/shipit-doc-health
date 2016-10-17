@@ -3,6 +3,7 @@
 var SOCKET_URL = 'http://'+window.location.hostname;
 var SOCKET_PORT = parseInt(window.location.port) + 1;
 
+
 function SocketManager (logger) {
   this.socket = io(SOCKET_URL + ':' + SOCKET_PORT);
 
@@ -66,17 +67,19 @@ var appendMessage = function (from, message, quickReplies) {
   updateScroll();
 };
 
-var sendVisitorMessage = (message) => {
+var sendVisitorMessage = (messageDisplay, message) => {
   const data = {
     message,
     sessionId
   };
-  appendMessage('visitor', message);
+  appendMessage('visitor', messageDisplay);
+
+  console.log(data);
   socketManager.sendMessage(data);
 };
 
 var sendQuickReply = (reply) => {
-  sendVisitorMessage(reply);
+  sendVisitorMessage(reply, reply);
   $('.quickReply').remove();
 };
 
@@ -85,7 +88,25 @@ var updateScroll = () => {
   element.scrollTop(element[0].scrollHeight);
 };
 
+var strReplace = (str) => {
+  let search = str.match(/(\d{1,2}\/\d{1,2}\/\d{4})+/g);
+  let newString = str;
+  if (search) {
+    search.forEach((value, index) => {
+      let date = moment.utc(search[index], 'DD/MM/YYYY');
+      newString = newString.replace(search[index], date.format('L'));
+    });
+  }
+  return newString;
+};
+
 $(document).ready(function () {
+  const stringDate = "conversion rate for manomano on 13/12/2016 and 20/12/2016";
+  let search = stringDate.match(/(\d{1,2}\/\d{1,2}\/\d{4})+/g);
+  //console.log(search);
+  let date = moment.utc(search[0],'DD/MM/YYYY');
+  //console.log(date.format('L'));
+
 
   socketManager.addReceivedMessageHandler(function (data) {
     sessionId = data.sessionId;
@@ -98,8 +119,14 @@ $(document).ready(function () {
   $("#chat-input input").keyup(function (event) {
     // User press ENTER
     if(event.keyCode == 13) {
+
       const message = $("#chat-input input").val();
-      sendVisitorMessage(message);
+
+      const messageFormated = strReplace(message);
+
+      console.log(messageFormated); // Le 26/05/2011
+
+      sendVisitorMessage(message, messageFormated);
       $("#chat-input input").val("");
     }
   });
