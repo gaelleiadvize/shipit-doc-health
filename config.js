@@ -6,8 +6,11 @@ module.exports = {
   socket: {
     port: process.env.SOCKET_PORT
   },
-  wit : {
-    token: process.env.WIT_AI_TOKEN
+  botManagers: {
+    activedBotManager: process.env.ACTIVED_BOT_MANAGER_NAME,
+    wit : {
+      token: process.env.WIT_AI_TOKEN
+    }
   },
   resources: {
     publicApi: {

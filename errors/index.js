@@ -33,6 +33,7 @@ module.exports = function(logger) {
     WitBadRequestError: require('./witBadRequestError')(DefaultError),
     SessionNotFoundError: require('./sessionNotFoundError')(DefaultError),
     DataMindingError: require('./dataMindingError')(DefaultError),
-    ClientNotFoundError: require('./clientNotFoundError')(DefaultError)
+    ClientNotFoundError: require('./clientNotFoundError')(DefaultError),
+    UnknownBotManagerPluginError: require('./unknownBotManagerPluginError')(DefaultError)
   };
 };

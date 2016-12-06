@@ -36,6 +36,7 @@
     "lodash": "x",
     "socket.io": "x",
     "node-wit": "git+https://github.com/wit-ai/node-wit",
+    "recastai": "2.3.0",
     "nodemon": "^1.9.1",
     "when": "x",
     "mysql": "x"
