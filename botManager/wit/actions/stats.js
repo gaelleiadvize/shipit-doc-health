@@ -6,8 +6,7 @@ module.exports = (logger, statsDomain) => {
     const val = entities && entities[entity] &&
         Array.isArray(entities[entity]) &&
         entities[entity].length > 0 &&
-       (attribute && entities[entity][0][attribute] || entities[entity][0].value)
-      ;
+       (attribute && entities[entity][0][attribute] || entities[entity][0].value);
     if (!val) {
       return null;
     }
