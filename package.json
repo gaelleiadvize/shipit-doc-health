@@ -8,7 +8,7 @@
   "scripts": {
     "check-build": "check-build",
     "start": "node index.js",
-    "start-dev": "nodemon -L index.js"
+    "start-dev": "nodemon -e js,.env,.css,.html -L index.js"
   },
   "repository": {
     "type": "git",

@@ -13,7 +13,7 @@ const domain = require('./domain')(errors, resources);
 const botManager = require('./botManager');
 
 // Launchers
-const launchServer = require('./server');
+const launchServer = require('./server')(config.app);
 const launchBot = _.partial(botManager, config.botManagers, errors, domain, console, sessionManager);
 
 socketManager.create()

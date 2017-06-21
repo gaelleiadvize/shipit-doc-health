@@ -3,13 +3,15 @@
 module.exports = (config, errors, domain, logger, sessionManager, socket) => {
   const wit = require('node-wit');
   const actions = require('./actions')(logger, domain);
-  const client = new wit.Wit({accessToken: config.token, actions});
 
   // When the bot responds to the visitor
   actions.send = (request, response) => {
     const {text, quickreplies} = response;
     return socket.sendMessage(request.sessionId, text, quickreplies);
   };
+
+  const client = new wit.Wit({accessToken: config.token, actions});
+
   // When the visitor send a message to the bot
   socket.addReceivedMessageHandler((data) => {
     return sessionManager.getSession(data.sessionId)
