@@ -1,7 +1,18 @@
-
 module.exports = {
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    ttl: 60000
+  },
   app: {
     port: process.env.APP_PORT
+  },
+  credentials: {
+    google: {
+      clientId: process.env.GOOGLE_CREDENTIALS_CLIENTID,
+      secret: process.env.GOOGLE_CREDENTIALS_SECRET,
+      callback: process.env.GOOGLE_CREDENTIALS_CALLBACK
+    }
   },
   socket: {
     port: process.env.SOCKET_PORT

@@ -6,6 +6,7 @@ module.exports = (config, errors, logger) => {
 
   return {
     dataMinding: require('./dataMinding')(config.dataMinding, errors, logger, mysql),
-    publicApi: require('./publicApi')(config.publicApi, errors, logger, httpClient)
+    publicApi: require('./publicApi')(config.publicApi, errors, logger, httpClient),
+    googleApi: require('./googleApi')()
   };
 };

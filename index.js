@@ -4,18 +4,25 @@ require('./bootstrap');
 
 const config = require('./config');
 
-const uuid = require ('uuid');
-const errors = require('./errors')(console);
-const sessionManager = require('./managers/session')(uuid, errors);
-const socketManager = require('./managers/socket')(config.socket, errors, console, sessionManager);
-const resources = require('./resources')(config.resources, errors, console);
-const domain = require('./domain')(errors, resources);
-const botManager = require('./botManager');
+const logger = console;
+const errors = require('./errors')(logger);
+const socketsPool = require('./managers/socketsPool')(errors);
+const resources = require('./resources')(config.resources, errors, logger);
+const redis = require('./helpers/redisClient')(config.redis, logger);
 
-// Launchers
-const launchServer = require('./server')(config.app);
-const launchBot = _.partial(botManager, config.botManagers, errors, domain, console, sessionManager);
+return redis.connect()
+  .then((redisClient) => {
+    const repos = require('./repos')(redisClient);
+    const socketManager = require('./managers/socket')(config.socket, errors, logger, socketsPool);
+    const domain = require('./domain')(config, logger, errors, repos, resources);
+    const api = require('./api')(domain, logger);
+    const botManager = require('./botManager');
 
-socketManager.create()
-  .then(launchBot)
-  .then(launchServer);
+    // Launchers
+    const launchServer = require('./server')(config.app, api);
+    const launchBot = _.partial(botManager, config.botManagers, errors, domain, console, repos.session);
+
+    return socketManager.create()
+    .then(launchBot)
+    .then(launchServer);
+  });

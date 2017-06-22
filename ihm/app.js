@@ -3,30 +3,31 @@
 var SOCKET_URL = 'http://'+window.location.hostname;
 var SOCKET_PORT = parseInt(window.location.port) + 1;
 
+function SocketManager (logger, sessionId) {
+  this.socket = io(SOCKET_URL + ':' + SOCKET_PORT, {
+    query: 'sessionId=' + sessionId
+  });
 
-function SocketManager (logger) {
-  this.socket = io(SOCKET_URL + ':' + SOCKET_PORT);
-
-  this.socket.on('connect', function () {
+  this.socket.on('connect', () => {
     logger.info('Connected on port ' + SOCKET_PORT);
   });
 
-  this.socket.on('connect_error', function () {
+  this.socket.on('connect_error', () => {
     logger.info('connected error ' + SOCKET_PORT);
   });
 
   return {
-    sendMessage: function (message) {
+    sendMessage: (message) => {
       this.socket.send(message);
-    }.bind(this),
-    addReceivedMessageHandler: function (handler) {
+    },
+    addReceivedMessageHandler: (handler) => {
       this.socket.on('message', handler);
-    }.bind(this)
+    }
   }
 };
 
-var sessionId;
-var socketManager = new SocketManager(console);
+var sessionId = document.location.search.match(/sessionId=([a-z0-9]+)/)[1];
+var socketManager = new SocketManager(console, sessionId);
 
 /* Dynamic IHM actions */
 
@@ -34,9 +35,9 @@ var buildQuickReplies = function (replies) {
   let html = '<ul class="quickReplies">';
   replies.forEach((value) => {
     html += '<li class="quickReply">' +
-        '<a data-tag="' + value + '">' +
-          value +
-        '</a>' +
+      '<a data-tag="' + value + '">' +
+      value +
+      '</a>' +
       '</li>';
   });
   html += '</ul>';
@@ -48,10 +49,10 @@ var appendMessage = function (from, message, quickReplies) {
 
   $('#chat-content .inner:first').append(
     '<div class="message">' +
-      '<div class="inner ' + from + '">' +
-         '<div class="text">' + message + '</div>' +
-         (hasQuickReplies ? buildQuickReplies(quickReplies) : '') +
-      '</div>' +
+    '<div class="inner ' + from + '">' +
+    '<div class="text">' + message + '</div>' +
+    (hasQuickReplies ? buildQuickReplies(quickReplies) : '') +
+    '</div>' +
     '</div>'
   );
 
@@ -74,7 +75,6 @@ var sendVisitorMessage = (messageDisplay, message) => {
   };
   appendMessage('visitor', messageDisplay);
 
-  console.log(data);
   socketManager.sendMessage(data);
 };
 
@@ -101,16 +101,7 @@ var strReplace = (str) => {
 };
 
 $(document).ready(function () {
-  const stringDate = "conversion rate for manomano on 13/12/2016 and 20/12/2016";
-  let search = stringDate.match(/(\d{1,2}\/\d{1,2}\/\d{4})+/g);
-  //console.log(search);
-  let date = moment.utc(search[0],'DD/MM/YYYY');
-  //console.log(date.format('L'));
-
-
-  socketManager.addReceivedMessageHandler(function (data) {
-    sessionId = data.sessionId;
-
+  socketManager.addReceivedMessageHandler((data) => {
     if (data.type === 'message') {
       appendMessage('bot', data.message, data.quickReplies);
     }
@@ -123,8 +114,6 @@ $(document).ready(function () {
       const message = $("#chat-input input").val();
 
       const messageFormated = strReplace(message);
-
-      console.log(messageFormated); // Le 26/05/2011
 
       sendVisitorMessage(message, messageFormated);
       $("#chat-input input").val("");

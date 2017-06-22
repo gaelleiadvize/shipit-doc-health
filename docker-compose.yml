@@ -9,3 +9,9 @@ services:
       - "6010:3000"
       - "6011:3001"
     env_file: .env
+    links:
+      - redis
+  redis:
+    image: iadvize/redis
+    ports:
+     - "6379:6379"

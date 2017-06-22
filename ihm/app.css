@@ -1,0 +1,129 @@
+* {
+    font-family: 'Proxima';
+}
+
+.logoresponsive {
+    display: block;
+    width: 100%;
+    height:30px;
+    text-align: center;
+    background:#fff;
+    padding:15px 0;
+}
+.logoresponsive img{
+    height:30px;
+}
+
+body {
+    background:url('img/fond-pupitre-bot.jpg');
+    background-size:cover;
+    margin:0;
+    padding:0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#chat-box {
+    background-color: #EEEFF0;
+    width: 50%;
+    height: 70%;
+    position: absolute;
+    margin: 0 25%;
+    margin-top: 100px;
+    padding-top: 8px;
+    padding-bottom: 2px;
+    bottom: 0px;
+}
+
+#chat-box header {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    text-align: center;
+    background-color: white;
+    top: -38px;
+    padding: 10px 0;
+    border-bottom: 1px solid #AAAAAA;
+    position: absolute;
+    width: 100%;
+    height: 25px;
+}
+
+#chat-box header  .drstrat-logo {
+    height: 100%;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+#chat-box header  .drstrat-title .name {
+    font-weight: bold;
+    font-family: "Helvetica Neue";
+}
+
+#chat-input {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+#chat-input .inner {
+    background-color: #EEEFF0;
+    height: 100%;
+    position: relative;
+    padding: 20px;
+}
+#chat-input input {
+    width: 100%;
+    padding: 12px 10px;
+    font-size: 15px;
+}
+
+#chat-content {
+    overflow-y: scroll;
+    height: calc(100% - 121px);;
+    position: relative;
+    padding: 20px;
+}
+
+#chat-content>.inner {
+
+    min-height: 100%;
+}
+
+.message {
+    margin: 25px 0;
+}
+
+.message>.inner {
+    clear: both;
+    width: 45%;
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    box-shadow: 2px 2px 2px #CCCCCC;
+}
+.message>.inner.visitor {
+    background-color: #1BC74E;
+    position: relative;
+    float: left;
+}
+.message>.inner.bot {
+    background-color: #0099FF;
+    position: relative;
+    float: right;
+}
+.message>.inner .quickReplies {
+    list-style: none;
+    font-size: 10px;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 10px;
+}
+.message>.inner a {
+    float: left;
+    padding: 5px 15px;
+    margin: 2px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid #EFEFEF;
+    color: #0099FF;
+    box-shadow: 0 0 2px 2px #0088FF;
+}
