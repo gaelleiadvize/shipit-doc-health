@@ -23,7 +23,7 @@ module.exports = (authSessionManager, logger) => {
               title: 'Session creation error',
               detail: error.message || error
             }
-          }).code(500);
+          }).status(500);
         });
     }
   };

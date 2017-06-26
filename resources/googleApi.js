@@ -27,8 +27,16 @@ module.exports = () => {
 
   return {
     calendar: {
-      list: function(credentials, data) {
-        return sendRequest('GET', calendar, 'calendar.calendarList.list', credentials, data);
+      get: (credentials, data) => {
+        return sendRequest('GET', calendar, 'calendars.get', credentials, data);
+      },
+      list: (credentials, data) => {
+        return sendRequest('GET', calendar, 'calendarList.list', credentials, data);
+      },
+      events: {
+        list: (credentials, data) => {
+          return sendRequest('GET', calendar, 'calendar.events.list', credentials, data);
+        }
       }
     }
   };

@@ -34,6 +34,7 @@ module.exports = function(logger) {
     SessionNotFoundError: require('./sessionNotFoundError')(DefaultError),
     DataMindingError: require('./dataMindingError')(DefaultError),
     ClientNotFoundError: require('./clientNotFoundError')(DefaultError),
-    UnknownBotManagerPluginError: require('./unknownBotManagerPluginError')(DefaultError)
+    UnknownBotManagerPluginError: require('./unknownBotManagerPluginError')(DefaultError),
+    MotionBadRequestError: require('./MotionBadRequestError')(DefaultError)
   };
 };

@@ -41,6 +41,9 @@
     "when": "x",
     "mysql": "x",
     "googleapis": "x",
-    "redis": "x"
+    "redis": "x",
+    "express": "x",
+    "body-parser": "x",
+    "moment": "x"
   }
 }

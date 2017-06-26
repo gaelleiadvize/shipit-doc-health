@@ -4,7 +4,7 @@
  * Access token route
  *
  * @param {object} authSessionManager Manage all authentication steps
- * @param {object} errors             Errors helper
+ * @param {object} logger             Logger
  *
  * @returns {{$get: Function}}
  */
@@ -17,13 +17,7 @@ module.exports = (authSessionManager, logger) => {
         })
         .catch((error) => {
           logger.error(error);
-
-          return reply.json({
-            error: {
-              title: 'Token retrieving error',
-              detail: error.message || error
-            }
-          }).code(500);
+          reply.redirect('/authenticate');
         });
     }
   };

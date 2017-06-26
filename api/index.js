@@ -8,9 +8,10 @@
  *
  * @returns {{management: *, authenticate: *, accessToken: *}}
  */
-module.exports = (domain, logger) => {
+module.exports = (config, errors, logger, domain, repos) => {
   return {
     authenticate: require('./authenticate')(domain.authSession, logger),
-    accessToken: require('./accessToken')(domain.authSession, logger)
+    accessToken: require('./accessToken')(domain.authSession, logger),
+    webhook: require('./webhook')(config, logger, errors, domain, repos.session)
   };
 };

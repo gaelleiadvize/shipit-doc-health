@@ -15,7 +15,7 @@ return redis.connect()
     const repos = require('./repos')(redisClient);
     const socketManager = require('./managers/socket')(config.socket, errors, logger, socketsPool);
     const domain = require('./domain')(config, logger, errors, repos, resources);
-    const api = require('./api')(domain, logger);
+    const api = require('./api')(config, errors, logger, domain, repos);
     const botManager = require('./botManager');
 
     // Launchers

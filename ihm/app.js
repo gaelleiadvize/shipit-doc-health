@@ -44,19 +44,53 @@ var buildQuickReplies = function (replies) {
   return html;
 };
 
-var appendMessage = function (from, message, quickReplies) {
+const buildButtons = (buttons) => {
+  let html = '<ul class="quickReplies">';
+  buttons.forEach((button) => {
+    html += '<li class="quickReply">';
+    if (button.buttonType === 'module') {
+      html += '<a data-tag="' + button.target + '">' + button.buttonText + '</a>';
+    }
+    if (button.buttonType === 'url') {
+      html += '<a href="' + button.target + '">' + button.buttonText + '</a>';
+    }
+    html += '</li>';
+  });
+  html += '</ul>';
+  return html;
+};
+
+const buildCards = (cards) => {
+  let html = '<div class="cards">';
+  cards.forEach((card) => {
+    html += card.cardLink != '' ? '<a href="' + card.cardLink + '">' : '';
+    html += '<div class="card">';
+    html += '    <img src="' + card.cardImage + '" />';
+    html += '    <div class="title">' + card.cardTitle + '</div>';
+    html += '    <div class="subtitle">' + card.cardSubtitle + '</div>';
+    html +=      (card.buttons && card.buttons.length > 0) ? buildButtons(card.buttons) : '';
+    html += '</div>';
+    html += card.cardLink != '' ? '</a>' : '';
+  });
+  html += '</div>';
+  return html;
+};
+
+var appendMessage = function (from, message, quickReplies, cards) {
   const hasQuickReplies = quickReplies && quickReplies.length > 0;
+  const hasCards = cards && cards.length > 0;
 
   $('#chat-content .inner:first').append(
     '<div class="message">' +
     '<div class="inner ' + from + '">' +
     '<div class="text">' + message + '</div>' +
     (hasQuickReplies ? buildQuickReplies(quickReplies) : '') +
+    (hasCards ? buildCards(cards) : '') +
     '</div>' +
     '</div>'
   );
 
-  if (hasQuickReplies) {
+  if (hasQuickReplies || hasCards) {
     $('.quickReplies a').each((index, reply) => {
       $(reply).on('click', (event) => {
         const tag = $(event.target).attr('data-tag');
@@ -103,7 +137,7 @@ var strReplace = (str) => {
 $(document).ready(function () {
   socketManager.addReceivedMessageHandler((data) => {
     if (data.type === 'message') {
-      appendMessage('bot', data.message, data.quickReplies);
+      appendMessage('bot', data.message, data.quickReplies, data.cards);
     }
   });
 
@@ -118,5 +152,10 @@ $(document).ready(function () {
       sendVisitorMessage(message, messageFormated);
       $("#chat-input input").val("");
     }
+  });
+
+  socketManager.sendMessage({
+    message: 'bot start',
+    sessionId
   });
 });

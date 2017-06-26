@@ -116,7 +116,7 @@ body {
     margin: 0px;
     margin-top: 10px;
 }
-.message>.inner a {
+.message>.inner .quickReplies a {
     float: left;
     padding: 5px 15px;
     margin: 2px;
@@ -126,4 +126,34 @@ body {
     border: 1px solid #EFEFEF;
     color: #0099FF;
     box-shadow: 0 0 2px 2px #0088FF;
+}
+
+.cards {
+    padding: 10px;
+}
+
+.card {
+    width: 150px;
+    display: inline-grid;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.card a {
+    text-decoration: none;
+    color: black;
+}
+
+.card img {
+    width: 100%;
+}
+
+.card .title {
+    padding: 5px;
 }

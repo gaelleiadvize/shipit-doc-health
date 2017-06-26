@@ -21,6 +21,11 @@ module.exports = {
     activedBotManager: process.env.ACTIVED_BOT_MANAGER_NAME,
     wit : {
       token: process.env.WIT_AI_TOKEN
+    },
+    motion: {
+      url: process.env.MOTION_API_URL,
+      botId: process.env.MOTION_API_BOT_ID,
+      key: process.env.MOTION_API_KEY
     }
   },
   resources: {

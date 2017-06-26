@@ -21,7 +21,7 @@ module.exports = (config, errors, logger, socketPool) => {
       });
   };
 
-  var sendMessage = (sessionId, message, quickReplies) => {
+  var sendMessage = (sessionId, message, quickReplies, cards) => {
     return socketPool.getSocket(sessionId)
     .then((socket) => {
       if (_.isEmpty(socket)) {
@@ -33,7 +33,8 @@ module.exports = (config, errors, logger, socketPool) => {
         sessionId,
         type: 'message',
         message,
-        quickReplies
+        quickReplies,
+        cards
       });
     });
   };

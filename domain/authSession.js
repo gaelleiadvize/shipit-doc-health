@@ -28,11 +28,13 @@ module.exports = function (config, logger, authSessionRepo) {
    */
   function getToken(sessionId, code) {
     return when.promise(function(resolve, reject) {
+      console.log('get oauth token ' + code)
       oauth2Client.getToken(code, function (err, tokens) {
+        console.log('getToken')
         if (err) {
           return reject(err);
         }
-
+console.log(tokens)
         return authSessionRepo.setCredentials(sessionId, code, tokens)
         .done(function () {
           resolve(tokens);
