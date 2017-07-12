@@ -13,7 +13,6 @@ module.exports = () => {
       if (!_.isFunction(sendRequestToApi)) {
         return reject('API sender doesnt exists');
       }
-
       sendRequestToApi(options, (err, apiResult) => {
         if (err) {
           return reject(err);
@@ -35,7 +34,10 @@ module.exports = () => {
       },
       events: {
         list: (credentials, data) => {
-          return sendRequest('GET', calendar, 'calendar.events.list', credentials, data);
+          return sendRequest('GET', calendar, 'events.list', credentials, data);
+        },
+        instances: (credentials, data) => {
+          return sendRequest('GET', calendar, 'events.instances', credentials, data);
         }
       }
     }

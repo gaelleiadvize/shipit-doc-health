@@ -10,13 +10,8 @@ module.exports = (logger, errors, domain, session) => {
     return context;
   };
   const storeContext = (data) => {
-    console.log(data)
     const sessionId = extractSessionId(data);
     return session.get(sessionId)
-      .tap(() => {
-        return domain.calendar.listCalendars(sessionId)
-        .then((data) => console.log(data))
-      })
       .then((sessionData) => {
         const context = extractContext(sessionData);
 
@@ -27,31 +22,31 @@ module.exports = (logger, errors, domain, session) => {
         return _.set(context, 'data.' + data.moduleNickname, reply);
       })
       .catch((err) => {
-        return when.reject(new errors.MotionBadRequestError('index', 'Motion.ai have a problem', err));
+        return when.reject(new errors.MotionBadRequestError('storeContext', 'Motion.ai have a problem', err));
       })
       .then((context) => {
-        console.log(context, sessionId)
         return session.setData(sessionId, {'context': JSON.stringify(context)});
       });
   };
   const getAvailability = (data) => {
-    console.log(data);
     const sessionId = extractSessionId(data);
     return session.get(sessionId)
     .then((sessionData) => {
       const context = extractContext(sessionData);
-      domain.calendar.listCalendars(sessionId)
+      console.log(context);
+      const calendarId = _.split(context.Who, ' ').join('.') + '@iadvize.com';
+      return domain.calendar.getCalendarAvailability(sessionId, calendarId, '2017-06-01', '2017-06-30')
       .then((data) => {
-        console.log(data)
-      });
-      return when.resolve({
-        slot1: 'a',
-        slot2: 'b',
-        slot3: 'c'
+        console.log(data);
+        return when.resolve({
+          slot1: 'a',
+          slot2: 'b',
+          slot3: 'c'
+        });
       });
     })
     .catch((err) => {
-      return when.reject(new errors.MotionBadRequestError('index', 'Motion.ai have a problem', err));
+      return when.reject(new errors.MotionBadRequestError('getAvailability', 'Motion.ai have a problem', err));
     });
   };
 

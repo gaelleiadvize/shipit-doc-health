@@ -23,18 +23,39 @@ module.exports = (authSessionManager, googleApi) => {
     return authSessionManager.getOAuthClient(sessionId)
       .then((credentials) => {
         return googleApi.calendar.events.list(credentials, {
-          query: {
-            calendarId: resourceId,
-            timeMin: moment(from).format(),
-            timeMax: moment(to).format()
-          }
+          calendarId: resourceId,
+          timeMin: moment(from).format(),
+          timeMax: moment(to).format()
         })
         .then((eventsList) => {
-          return _.filter(eventsList.items, (item) => (item.status !== 'cancelled'))
+          return when.map(eventsList.items, (event) => {
+            return googleApi.calendar.events.instances(credentials, {
+              calendarId: resourceId,
+              eventId: event.id,
+              timeMin: moment(from).format(),
+              timeMax: moment(to).format()
+            })
+            .then((eventInstances) => {
+              if (_.isEmpty(eventInstances.items)) {
+                return event;
+              }
+              return eventInstances.items;
+            });
+          });
+        })
+        .then(_.flattenDeep)
+        .then((eventsList) => {
+          return _.filter(eventsList, (item) => (item.status !== 'cancelled'));
         })
         .then((events) => {
-          return _.map(events.items, (event) => _.pick(event, ['start', 'end']));
-        });
+          return _.map(events, (event) => {
+            return {
+              start: _.get(event, 'start.dateTime'),
+              end: _.get(event, 'end.dateTime')
+            };
+          });
+        })
+        .then(_.partialRight(_.sortBy, ['start']));
       });
   };
 
